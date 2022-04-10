@@ -11,6 +11,4 @@ public class FelizMenteApplication {
 		SpringApplication.run(FelizMenteApplication.class, args);
 	}
 	
-
-
 }

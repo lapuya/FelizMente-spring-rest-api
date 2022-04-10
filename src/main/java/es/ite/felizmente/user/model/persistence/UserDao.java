@@ -1,11 +1,14 @@
 package es.ite.felizmente.user.model.persistence;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import org.springframework.stereotype.Component;
 
 import es.ite.felizmente.user.model.entity.User;
 
@@ -13,6 +16,7 @@ import es.ite.felizmente.user.model.entity.User;
  * THIS CLASS USES JPA TO MANAGE DATA IN THE DATABASE
  */
 
+@Component
 public class UserDao {
 	private EntityManager em;
 	
