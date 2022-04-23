@@ -25,7 +25,7 @@ public class UserController {
 	
 
 	//GET -> get a User by id
-	@GetMapping(path="Users/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="felizmente/users/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> getUser(@PathVariable("id") int id) {
         System.out.println("Buscando User con id: " + id);
         User u = userDao.search(id);
@@ -37,7 +37,7 @@ public class UserController {
     }
 	
 	//Post -> to register a user
-	@PostMapping(path="Users",consumes=MediaType.APPLICATION_JSON_VALUE,
+	@PostMapping(path="felizmente/users",consumes=MediaType.APPLICATION_JSON_VALUE,
             produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> altaUser(@RequestBody User u) {
         System.out.println("altaUser: objeto User: " + u);
@@ -48,7 +48,7 @@ public class UserController {
     }
 	
 	//list all users
-	@GetMapping(path="Users",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="felizmente/users",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> listarUser() {
         List<User> listaUsers = null;
         
@@ -58,7 +58,7 @@ public class UserController {
     }
 	
 	//Put -> modify by Id
-	@PutMapping(path="Users/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path="felizmente/users/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> modificarUser(
             @PathVariable("id") int id, 
             @RequestBody User u) {
@@ -74,7 +74,7 @@ public class UserController {
     }
 	
 	//DELETE -> delete a user by Id
-	@DeleteMapping(path="Users/{id}")
+	@DeleteMapping(path="felizmente/users/{id}")
     public ResponseEntity<User> borrarUser(@PathVariable("id") int id) {
         System.out.println("ID a borrar: " + id);
         User u = userDao.delete(id);
@@ -84,7 +84,4 @@ public class UserController {
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);//404 NOT FOUND
         }
     }
-	
-	
-
 }

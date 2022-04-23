@@ -22,7 +22,7 @@ public class UserDao {
 	
 	private boolean openConnection(){
 		try {
-			EntityManagerFactory factory = Persistence.createEntityManagerFactory("FelizMente");
+			EntityManagerFactory factory = Persistence.createEntityManagerFactory("felizmente");
 			em = factory.createEntityManager();
 			return true;
 		} catch (Exception e) {
@@ -51,7 +51,6 @@ public class UserDao {
 		em.persist(u);
 		et.commit();
 		closeConnection();
-		
 		return search(u.getId()); //if not null, inserted correctly
 	}
 	
@@ -94,9 +93,9 @@ public class UserDao {
 			return null;
 		}		
 		//para hacer la consulta debemos de usar JPQL
-		Query query = em.createQuery("select autor from Autor autor");
-		List<User> listaAutores = query.getResultList();
-		return listaAutores;
+		Query query = em.createQuery("select user from User user");
+		List<User> usersList = query.getResultList();
+		return usersList;
 	}
 
 }

@@ -10,18 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class FelizMenteApplication implements CommandLineRunner {
+public class FelizMenteApplication {
 
 	public static void main(String[] args)  {
 		SpringApplication.run(FelizMenteApplication.class, args);
 	}
-
-	@Override
-	public void run(String... args) throws Exception {
-		// TODO Auto-generated method stub
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("FelizMente");
-		EntityManager em = factory.createEntityManager();
-		
-	}
-	
 }
