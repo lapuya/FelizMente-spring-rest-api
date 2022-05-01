@@ -20,9 +20,5 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	private String name, lastName, username, password;
-	
-	@Embedded
-	private Address address;
-
+	private String username, email, password;
 }

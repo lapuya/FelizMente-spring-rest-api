@@ -8,6 +8,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import es.ite.felizmente.user.model.entity.Admin;
 import org.springframework.stereotype.Component;
 
 import es.ite.felizmente.user.model.entity.User;
@@ -51,7 +52,7 @@ public class UserDao {
 		em.persist(u);
 		et.commit();
 		closeConnection();
-		return search(u.getId()); //if not null, inserted correctly
+		return search(u.getEmail()); //if not null, inserted correctly
 	}
 	
 	public User update(User u) {
@@ -66,25 +67,35 @@ public class UserDao {
 		return u;
 	}
 
-	public User delete(int id) {
+	public User delete(String email) {
 		if(!openConnection()) {
 			return null;
 		}
 
-		User uAux = search(id);
+		User uAux = search(email);
 		EntityTransaction et = em.getTransaction();
 		et.begin();
 		em.remove(uAux);
 		et.commit();
 		closeConnection();
-		return search(uAux.getId()); //if null, then we deleted it
+		return search(uAux.getEmail()); //if null, then we deleted it
 	}
 	
-	public User search(int id) {
+	public User search(String email) {
 		if(!openConnection()) {
 			return null;
 		}
-		return em.find(User.class, id);
+		try {
+
+			return (em.createQuery("select user from User user where user.email = :email", User.class)
+					.setParameter("email", email)
+					.getSingleResult());
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("More than 1 result");
+			return null;
+		}
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -98,4 +109,26 @@ public class UserDao {
 		return usersList;
 	}
 
+
+	public User searchForLogin(String token) {
+		if (!openConnection()) {
+			return null;
+		}
+
+		String string = token;
+		String[] parts = string.split("-");
+		String email = parts[0];
+		String password = parts[1];
+		try {
+			return (em.createQuery("select user from User user" +
+							" where user.email = :email and user.password = :password", User.class)
+					.setParameter("email", email)
+					.setParameter("password", password)
+					.getSingleResult());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
