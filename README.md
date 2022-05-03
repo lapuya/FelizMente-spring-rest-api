@@ -18,7 +18,7 @@ Steps:
 ### The service ✅
 There are two end type of endpoints that can be consumed with, for example, Postman.
 
-## Users
+#### Users
 * GET:
   * http://localhost:8080/felizmente/users/{email} -> get a user by email
   * http://localhost:8080/felizmente/users/login/{token} -> get a user based on a token
@@ -30,7 +30,7 @@ There are two end type of endpoints that can be consumed with, for example, Post
 * DELETE:
   * http://localhost:8080/felizmente/users/{email} -> delete a user by email
 
-## Admin
+#### Admin
 * GET:
   * http://localhost:8080/felizmente/users/login/{token} -> get an admin based on a token
 
