@@ -1,12 +1,9 @@
 package es.ite.felizmente.user.model.persistence;
 
 import es.ite.felizmente.user.model.entity.Admin;
-import org.hibernate.criterion.CriteriaQuery;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import javax.persistence.criteria.ParameterExpression;
-import java.util.List;
 
 @Component
 public class AdminDao {

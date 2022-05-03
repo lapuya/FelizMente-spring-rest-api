@@ -1,7 +1,6 @@
 package es.ite.felizmente.user.controller;
 
 import es.ite.felizmente.user.model.entity.Admin;
-import es.ite.felizmente.user.model.entity.User;
 import es.ite.felizmente.user.model.persistence.AdminDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,5 @@ public class AdminController {
             return new ResponseEntity<Admin>(a, HttpStatus.OK);//200 OK
         else
             return new ResponseEntity<Admin>(HttpStatus.NOT_FOUND);//404 NOT FOUND
-
     }
 }

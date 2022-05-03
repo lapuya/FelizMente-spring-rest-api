@@ -71,7 +71,6 @@ public class UserDao {
 		if(!openConnection()) {
 			return null;
 		}
-
 		User uAux = search(email);
 		EntityTransaction et = em.getTransaction();
 		et.begin();
@@ -86,7 +85,6 @@ public class UserDao {
 			return null;
 		}
 		try {
-
 			return (em.createQuery("select user from User user where user.email = :email", User.class)
 					.setParameter("email", email)
 					.getSingleResult());
@@ -109,12 +107,10 @@ public class UserDao {
 		return usersList;
 	}
 
-
 	public User searchForLogin(String token) {
 		if (!openConnection()) {
 			return null;
 		}
-
 		String string = token;
 		String[] parts = string.split("-");
 		String email = parts[0];

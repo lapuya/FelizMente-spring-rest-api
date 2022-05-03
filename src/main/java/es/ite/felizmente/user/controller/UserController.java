@@ -23,7 +23,6 @@ public class UserController {
 	
 	@Autowired
 	private UserDao userDao;
-	
 
 	//GET -> get a User by email
 	@GetMapping(path="felizmente/users/{email}",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,7 +45,6 @@ public class UserController {
             return new ResponseEntity<User>(u, HttpStatus.OK);//200 OK
         else
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);//404 NOT FOUND
-
     }
 	
 	//Post -> to register a user

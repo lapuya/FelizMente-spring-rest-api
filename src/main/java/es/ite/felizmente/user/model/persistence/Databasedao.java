@@ -53,6 +53,5 @@ public class Databasedao {
                 .username("samselem")
                 .email("emaildesarah@gmail.com")
                 .password("mypassword3").build());
-
     }
 }
