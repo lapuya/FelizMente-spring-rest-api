@@ -16,7 +16,7 @@ Steps:
 * Running the project will create two tables: users and admins (users will be empty and admins will have default values)
 
 ### The service ✅
-There are two end type of endpoints that can be consumed with, for example, Postman.
+There are two types of endpoints that can be consumed with, for example, Postman.
 
 #### Users
 * GET:
