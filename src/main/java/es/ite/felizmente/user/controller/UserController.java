@@ -2,7 +2,6 @@ package es.ite.felizmente.user.controller;
 
 import java.util.List;
 
-import es.ite.felizmente.user.model.entity.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +24,7 @@ public class UserController {
 	private UserDao userDao;
 
 	//GET -> get a User by email
-	@GetMapping(path="felizmente/users/{email}",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="felizmente/users/registration/{email}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> getUser(@PathVariable("email") String email) {
         System.out.println("Buscando User con email: " + email);
         User u = userDao.search(email);
@@ -46,9 +45,19 @@ public class UserController {
         else
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);//404 NOT FOUND
     }
+
+    //GET -> get an User id
+    @GetMapping(path="felizmente/users/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getUserById(@PathVariable("id") int id) {
+        User u = userDao.searchById(id);
+        if(u != null)
+            return new ResponseEntity<User>(u, HttpStatus.OK);//200 OK
+        else
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);//404 NOT FOUND
+    }
 	
 	//Post -> to register a user
-	@PostMapping(path="felizmente/users",consumes=MediaType.APPLICATION_JSON_VALUE,
+	@PostMapping(path="felizmente/users/",consumes=MediaType.APPLICATION_JSON_VALUE,
             produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> registerUser(@RequestBody User u) {
         System.out.println("registerUser: " + u);
@@ -59,7 +68,7 @@ public class UserController {
     }
 	
 	//list all users
-	@GetMapping(path="felizmente/users",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="felizmente/users/",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> listarUser() {
         List<User> listaUsers = null;
         
@@ -84,15 +93,14 @@ public class UserController {
         }
     }
 	
-	//DELETE -> delete a user by email
-	@DeleteMapping(path="felizmente/users/{email}")
-    public ResponseEntity<User> deleteUser(@PathVariable("email") String email) {
-        System.out.println("Email of the user to delete: " + email);
-        User u = userDao.delete(email);
-        if(u != null) {
-            return new ResponseEntity<User>(u,HttpStatus.OK);//200 OK
+	//DELETE -> delete a user by id
+	@DeleteMapping(path="felizmente/users/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") int id) {
+        System.out.println("Id of the user to delete: " + id);
+        if(userDao.delete(id)) {
+            return new ResponseEntity<String>("User deleted",HttpStatus.OK);//200 OK
         }else {
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);//404 NOT FOUND
+            return new ResponseEntity<String>("User does not exist",HttpStatus.NOT_FOUND);//404 NOT FOUND
         }
     }
 }

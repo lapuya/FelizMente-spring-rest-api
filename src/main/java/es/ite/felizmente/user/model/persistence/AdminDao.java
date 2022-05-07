@@ -44,15 +44,13 @@ public class AdminDao {
         return a;
     }
 
-    public Admin search(String token) {
+    public Admin search(Admin a) {
         if (!openConnection()) {
             return null;
         }
 
-        String string = token;
-        String[] parts = string.split("-");
-        String username = parts[0];
-        String password = parts[1];
+        String username = a.getUsername();
+        String password = a.getPassword();
         try {
             return (em.createQuery("select admin from Admin admin" +
                             " where admin.username = :username and admin.password = :password", Admin.class)

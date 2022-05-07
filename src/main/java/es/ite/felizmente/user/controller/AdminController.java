@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,11 +16,11 @@ public class AdminController {
 
     @Autowired
     private AdminDao adminDao;
-    //GET -> get an Admin by username + password
-    @GetMapping(path="felizmente/admins/{token}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Admin> getAdmin(@PathVariable("token") String token) {
-        System.out.println("Buscando Admin con token: " + token);
-        Admin a = adminDao.search(token);
+    //Used Post to get an Admin by username + password. It is discourage to use get method since the url needs the data
+    @PostMapping (path="felizmente/admins/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Admin> getAdmin(@RequestBody Admin admin) {
+        System.out.println("Buscando Admin: " + admin.toString());
+        Admin a = adminDao.search(admin);
         if(a != null)
             return new ResponseEntity<Admin>(a, HttpStatus.OK);//200 OK
         else

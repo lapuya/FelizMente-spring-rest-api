@@ -67,17 +67,22 @@ public class UserDao {
 		return u;
 	}
 
-	public User delete(String email) {
+	public boolean delete(int id) {
 		if(!openConnection()) {
-			return null;
+			return false;
 		}
-		User uAux = search(email);
-		EntityTransaction et = em.getTransaction();
-		et.begin();
-		em.remove(uAux);
-		et.commit();
-		closeConnection();
-		return search(uAux.getEmail()); //if null, then we deleted it
+		try {
+			User uAux = searchById(id);
+			EntityTransaction et = em.getTransaction();
+			et.begin();
+			em.remove(uAux);
+			et.commit();
+			closeConnection();
+			return true; //if null, then we deleted it
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public User search(String email) {
@@ -93,7 +98,6 @@ public class UserDao {
 			System.out.println("More than 1 result");
 			return null;
 		}
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -101,7 +105,6 @@ public class UserDao {
 		if(!openConnection()) {
 			return null;
 		}		
-		//para hacer la consulta debemos de usar JPQL
 		Query query = em.createQuery("select user from User user");
 		List<User> usersList = query.getResultList();
 		return usersList;
@@ -126,5 +129,13 @@ public class UserDao {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	//search by Id
+	public User searchById(int id) {
+		if(!openConnection()) {
+			return null;
+		}
+		return em.find(User.class, id);
 	}
 }
