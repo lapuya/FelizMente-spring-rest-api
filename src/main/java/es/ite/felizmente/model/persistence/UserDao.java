@@ -1,26 +1,34 @@
-package es.ite.felizmente.user.model.persistence;
-import java.util.List;
+package es.ite.felizmente.model.persistence;
 
-import javax.persistence.Entity;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import es.ite.felizmente.user.model.entity.Admin;
+import es.ite.felizmente.model.entity.Admin;
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import es.ite.felizmente.user.model.entity.User;
+import es.ite.felizmente.model.entity.User;
+
+import java.util.Base64;
+import java.util.List;
 
 /*
  * THIS CLASS USES JPA TO MANAGE DATA IN THE DATABASE
  */
 
+@Data
 @Component
 public class UserDao {
 	private EntityManager em;
-	
+	Cipher encryptor;
+	SecretKey scytale;
+
+
 	private boolean openConnection(){
 		try {
 			EntityManagerFactory factory = Persistence.createEntityManagerFactory("felizmente");
@@ -31,7 +39,7 @@ public class UserDao {
 			return false;
 		}
 	}
-	
+
 	private boolean closeConnection(){
 		try {
 			em.close();
@@ -42,19 +50,25 @@ public class UserDao {
 			return false;
 		}
 	}
-	
+
 	public User insert(User u) {
 		if(!openConnection()) {
 			return null;
 		}
-		EntityTransaction et = em.getTransaction();
-		et.begin();
-		em.persist(u);
-		et.commit();
-		closeConnection();
-		return search(u.getEmail()); //if not null, inserted correctly
+		try {
+			u.setPassword(Base64.getEncoder().encodeToString(encryptor.doFinal(u.getPassword().getBytes())));
+			EntityTransaction et = em.getTransaction();
+			et.begin();
+			em.persist(u);
+			et.commit();
+			closeConnection();
+			return search(u.getEmail());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
-	
+
 	public User update(User u) {
 		if(!openConnection()) {
 			return null;
@@ -84,7 +98,7 @@ public class UserDao {
 			return false;
 		}
 	}
-	
+
 	public User search(String email) {
 		if(!openConnection()) {
 			return null;
@@ -104,7 +118,7 @@ public class UserDao {
 	public List<User> list() {
 		if(!openConnection()) {
 			return null;
-		}		
+		}
 		Query query = em.createQuery("select user from User user");
 		List<User> usersList = query.getResultList();
 		return usersList;
@@ -137,5 +151,32 @@ public class UserDao {
 			return null;
 		}
 		return em.find(User.class, id);
+	}
+
+	public User searchByUser(User user) {
+		if (!openConnection()) {
+			return null;
+		}
+
+		String username = user.getUsername();
+
+		User uAux = em.createQuery("select user from User user where user.email = :username", User.class)
+				.setParameter("username", username)
+				.getSingleResult();
+		try {
+			if (uAux != null) {
+				encryptor.init(Cipher.DECRYPT_MODE, scytale);
+				byte [] passwordBytes = encryptor.doFinal(Base64.getDecoder().decode(uAux.getPassword()));
+				String passwordString = new String (passwordBytes);
+				if (user.getPassword().equals(passwordString)) {
+					return uAux;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return null;
 	}
 }

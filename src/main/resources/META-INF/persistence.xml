@@ -3,8 +3,8 @@
 	<persistence-unit name="felizmente" transaction-type="RESOURCE_LOCAL">
 
 
-	  	<class>es.ite.felizmente.user.model.entity.User</class>
-	  	<class>es.ite.felizmente.user.model.entity.Admin</class>
+	  	<class>es.ite.felizmente.model.entity.User</class>
+	  	<class>es.ite.felizmente.model.entity.Admin</class>
 
 
 		<properties>

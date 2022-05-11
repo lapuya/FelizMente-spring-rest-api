@@ -1,14 +1,22 @@
-package es.ite.felizmente.user.model.persistence;
+package es.ite.felizmente.model.persistence;
 
-import es.ite.felizmente.user.model.entity.Admin;
+import es.ite.felizmente.model.entity.Admin;
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 import javax.persistence.*;
+import java.util.Base64;
 
+@Data
 @Component
 public class AdminDao {
 
     private EntityManager em;
+    Cipher encryptor;
+    SecretKey scytale;
+
 
     private boolean openConnection(){
         try {
@@ -50,19 +58,27 @@ public class AdminDao {
         }
 
         String username = a.getUsername();
-        String password = a.getPassword();
-        try {
-            return (em.createQuery("select admin from Admin admin" +
-                            " where admin.username = :username and admin.password = :password", Admin.class)
-                    .setParameter("username", username)
-                    .setParameter("password", password)
-                    .getSingleResult());
 
+        Admin aAux = em.createQuery("select admin from Admin admin where admin.username = :username", Admin.class)
+                .setParameter("username", username)
+                .getSingleResult();
+        try {
+             if (aAux != null) {
+                encryptor.init(Cipher.DECRYPT_MODE, scytale);
+                byte [] passwordBytes = encryptor.doFinal(Base64.getDecoder().decode(aAux.getPassword()));
+                String passwordString = new String (passwordBytes);
+                if (a.getPassword().equals(passwordString)) {
+                    return aAux;
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+
+        return null;
     }
+
 
 
 }

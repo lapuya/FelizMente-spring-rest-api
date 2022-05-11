@@ -1,4 +1,4 @@
-package es.ite.felizmente.user.model.entity;
+package es.ite.felizmente.model.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
