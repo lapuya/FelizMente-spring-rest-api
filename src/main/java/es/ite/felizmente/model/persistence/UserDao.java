@@ -8,7 +8,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import es.ite.felizmente.model.entity.Admin;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +24,8 @@ import java.util.List;
 @Component
 public class UserDao {
 	private EntityManager em;
-	Cipher encryptor;
-	SecretKey scytale;
-
+	private Cipher encryptor;
+	private SecretKey scytale;
 
 	private boolean openConnection(){
 		try {
@@ -176,7 +174,6 @@ public class UserDao {
 			e.printStackTrace();
 			return null;
 		}
-
 		return null;
 	}
 }

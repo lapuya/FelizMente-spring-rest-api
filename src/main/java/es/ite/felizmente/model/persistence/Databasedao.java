@@ -4,6 +4,7 @@ import es.ite.felizmente.model.entity.Admin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
 import javax.persistence.EntityManager;
@@ -20,7 +21,7 @@ import java.util.Base64;
 
 @Data
 @AllArgsConstructor
-@Component
+@Service
 public class Databasedao {
 
     public boolean alreadyWithAdmins() {

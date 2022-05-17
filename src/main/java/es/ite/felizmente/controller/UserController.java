@@ -2,7 +2,6 @@ package es.ite.felizmente.controller;
 
 import java.util.List;
 
-import es.ite.felizmente.model.entity.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -70,7 +69,7 @@ public class UserController {
 
 	//list all users
 	@GetMapping(path="felizmente/users/",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<User>> listarUser() {
+    public ResponseEntity<List<User>> listUsers() {
         List<User> listaUsers = null;
 
         listaUsers = userDao.list();
@@ -80,7 +79,7 @@ public class UserController {
 
 	//Put -> modify by Id
 	@PutMapping(path="felizmente/users/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> modificarUser(
+    public ResponseEntity<User> modifyUser(
             @PathVariable("id") int id,
             @RequestBody User u) {
         System.out.println("ID to modify: " + id);
@@ -107,7 +106,7 @@ public class UserController {
 
     //Used Post to get an User by username + password. It is discourage to use get method since the url needs the data
     @PostMapping (path="felizmente/users/login/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getAdmin(@RequestBody User user) {
+    public ResponseEntity<User> getUserForLogin(@RequestBody User user) {
         System.out.println("Buscando User: " + user.toString());
         User u = userDao.searchByUser(user);
         if(u != null)

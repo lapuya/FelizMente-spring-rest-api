@@ -2,7 +2,7 @@ package es.ite.felizmente.model.persistence;
 
 import es.ite.felizmente.model.entity.Admin;
 import lombok.Data;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -10,12 +10,12 @@ import javax.persistence.*;
 import java.util.Base64;
 
 @Data
-@Component
+@Service
 public class AdminDao {
 
     private EntityManager em;
-    Cipher encryptor;
-    SecretKey scytale;
+    private Cipher encryptor;
+    private SecretKey scytale;
 
 
     private boolean openConnection(){
@@ -57,12 +57,13 @@ public class AdminDao {
             return null;
         }
 
-        String username = a.getUsername();
-
-        Admin aAux = em.createQuery("select admin from Admin admin where admin.username = :username", Admin.class)
-                .setParameter("username", username)
-                .getSingleResult();
         try {
+            String username = a.getUsername();
+
+            Admin aAux = em.createQuery("select admin from Admin admin where admin.username = :username", Admin.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+
              if (aAux != null) {
                 encryptor.init(Cipher.DECRYPT_MODE, scytale);
                 byte [] passwordBytes = encryptor.doFinal(Base64.getDecoder().decode(aAux.getPassword()));
@@ -75,10 +76,6 @@ public class AdminDao {
             e.printStackTrace();
             return null;
         }
-
         return null;
     }
-
-
-
 }
