@@ -13,12 +13,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.Base64;
 
-/*
-     1. We are aware that setting passwords this way is a huge breach of security. We are doing it in this manner
-     for debugging purposes. Implement encryption.
-     2. It is called "Databasedao" and not DataBaseDao because we had problems with naming convention in main class.
- */
-
 @Data
 @AllArgsConstructor
 @Service

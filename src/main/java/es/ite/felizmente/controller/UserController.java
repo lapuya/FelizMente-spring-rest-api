@@ -35,17 +35,6 @@ public class UserController {
 
     }
 
-    /*//GET -> get an User by username + password
-    @GetMapping(path="felizmente/users/login/{token}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getUserLogin(@PathVariable("token") String token) {
-        System.out.println("Searching User with token: " + token);
-        User u = userDao.searchForLogin(token);
-        if(u != null)
-            return new ResponseEntity<User>(u, HttpStatus.OK);//200 OK
-        else
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);//404 NOT FOUND
-    }*/
-
     //GET -> get an User id
     @GetMapping(path="felizmente/users/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUserById(@PathVariable("id") int id) {
