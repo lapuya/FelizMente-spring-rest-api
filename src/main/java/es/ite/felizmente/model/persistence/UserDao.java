@@ -54,6 +54,7 @@ public class UserDao {
 			return null;
 		}
 		try {
+			encryptor.init(Cipher.ENCRYPT_MODE, scytale);
 			u.setPassword(Base64.getEncoder().encodeToString(encryptor.doFinal(u.getPassword().getBytes())));
 			EntityTransaction et = em.getTransaction();
 			et.begin();
