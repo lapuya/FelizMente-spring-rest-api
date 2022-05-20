@@ -72,12 +72,19 @@ public class UserDao {
 		if(!openConnection()) {
 			return null;
 		}
-		EntityTransaction et = em.getTransaction();
-		et.begin();
-		u = em.merge(u);
-		et.commit();
-		closeConnection();
-		return u;
+		try {
+			encryptor.init(Cipher.ENCRYPT_MODE, scytale);
+			u.setPassword(Base64.getEncoder().encodeToString(encryptor.doFinal(u.getPassword().getBytes())));
+			EntityTransaction et = em.getTransaction();
+			et.begin();
+			em.merge(u);
+			et.commit();
+			closeConnection();
+			return u;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public boolean delete(int id) {
