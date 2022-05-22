@@ -54,14 +54,17 @@ public class UserDao {
 			return null;
 		}
 		try {
-			encryptor.init(Cipher.ENCRYPT_MODE, scytale);
-			u.setPassword(Base64.getEncoder().encodeToString(encryptor.doFinal(u.getPassword().getBytes())));
-			EntityTransaction et = em.getTransaction();
-			et.begin();
-			em.persist(u);
-			et.commit();
-			closeConnection();
-			return search(u.getEmail());
+			if (search(u.getEmail()) == null) {
+				encryptor.init(Cipher.ENCRYPT_MODE, scytale);
+				u.setPassword(Base64.getEncoder().encodeToString(encryptor.doFinal(u.getPassword().getBytes())));
+				EntityTransaction et = em.getTransaction();
+				et.begin();
+				em.persist(u);
+				et.commit();
+				closeConnection();
+				return search(u.getEmail());
+			} else
+				return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
